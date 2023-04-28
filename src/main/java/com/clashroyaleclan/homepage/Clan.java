@@ -3,18 +3,10 @@ package com.clashroyaleclan.homepage;
 import java.util.List;
 
 public class Clan {
-
-    private String name;
     private String tag;
-    private List<ClanMember> members;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
+    private int clanWarTrophies;
+    private List<ClanMember> memberList;
 
     public String getTag() {
         return tag;
@@ -24,14 +16,27 @@ public class Clan {
         this.tag = tag;
     }
 
-    public List<ClanMember> getMembers() {
-        return members;
+    public String getName() {
+        return name;
     }
 
-    public void setMembers(List<ClanMember> members) {
-        this.members = members;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getClanWarTrophies() {
+        return clanWarTrophies;
+    }
+
+    public void setClanWarTrophies(int clanWarTrophies) {
+        this.clanWarTrophies = clanWarTrophies;
+    }
+
+    public List<ClanMember> getMemberList() {
+        return memberList;
+    }
+
+    public void setMemberList(List<ClanMember> memberList) {
+        this.memberList = memberList;
     }
 }
-
-
-
