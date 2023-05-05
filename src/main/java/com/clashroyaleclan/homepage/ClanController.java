@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -59,13 +60,14 @@ public class ClanController {
         // Create a list to hold the clan members
         List<ClanMember> memberList = new ArrayList<>();
 
-        // Loop through the memberList JSON array and create a ClanMember object for each member
         for (JsonNode memberNode : rootNode.get("memberList")) {
             ClanMember member = new ClanMember();
             member.setName(memberNode.get("name").asText());
             member.setTrophies(memberNode.get("trophies").asInt());
+            member.setTag(memberNode.get("tag").asText());
             memberList.add(member);
         }
+        
 
         // Set the memberList property of the clan object
         clan.setMemberList(memberList);
@@ -76,4 +78,42 @@ public class ClanController {
         // Return the name of the view to be rendered
         return "clan";
     }
+
+    @GetMapping("/players/{playerTag}")
+    public String getPlayer(@PathVariable String playerTag, Model model) throws IOException, InterruptedException {
+    String encodedPlayerTag = URLEncoder.encode(playerTag, StandardCharsets.UTF_8);
+    String apiUrl = String.format(API_URL, encodedPlayerTag);
+    log.info("apiUrl: {}", apiUrl);
+
+    // Set up the API request
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(apiUrl))
+            .header("Authorization", "Bearer " + API_KEY)
+            .header("Accept", "application/json")
+            .build();
+
+    // Send the API request and deserialize the response
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    ObjectMapper objectMapper = new ObjectMapper();
+    JsonNode rootNode = objectMapper.readTree(response.body());
+
+    // Create a Player object and set its properties
+    Player player = new Player();
+    player.setName(rootNode.get("name").asText());
+    player.setTrophies(rootNode.get("trophies").asInt());
+    player.setTag(rootNode.get("tag").asText());
+    player.setExpLevel(rootNode.get("expLevel").asInt());
+    player.setBestTrophies(rootNode.get("bestTrophies").asInt());
+    player.setWins(rootNode.get("wins").asInt());
+    player.setLosses(rootNode.get("losses").asInt());
+
+    // Add the Player object to the model
+    model.addAttribute("player", player);
+
+    // Return the name of the view to be rendered
+    return "player";
+    }
+
+
 }

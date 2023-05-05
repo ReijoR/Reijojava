@@ -10,12 +10,13 @@ import java.net.http.HttpResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+//import org.springframework.web.bind.annotation.PathVariable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,11 +60,21 @@ public class PlayerController {
     player.setWins(rootNode.get("wins").asInt());
     player.setLosses(rootNode.get("losses").asInt());
 
+    // Set the clan name if the player is in a clan
+    if (rootNode.has("clan")) {
+        JsonNode clanNode = rootNode.get("clan");
+        player.setClanName(clanNode.get("name").asText());
+        player.setClanTag(clanNode.get("tag").asText());
+    }
+
     // Add the Player object to the model
     model.addAttribute("player", player);
 
     // Return the name of the view to be rendered
     return "player";
-}
+    }
+
 
 }
+
+

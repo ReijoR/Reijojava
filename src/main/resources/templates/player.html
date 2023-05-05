@@ -46,6 +46,7 @@
         <h1>Player Details</h1>
         <p>Name: <span th:text="${player.name}"></span></p>
         <p>Tag: <span th:text="${player.tag}"></span></p>
+		<p>Clan: <a th:href="@{/clans(clanTag=${player.clanTag})}"><span th:text="${player.clanName}"></span></a></p>
         <p>Experience Level: <span th:text="${player.expLevel}"></span></p>
         <p>Trophies: <span th:text="${player.trophies}"></span></p>
         <p>Best Trophies: <span th:text="${player.bestTrophies}"></span></p>

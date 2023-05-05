@@ -23,6 +23,15 @@ public class Player {
     @SerializedName("losses")
     private int losses;
 
+    @SerializedName("clan")
+    private String clanName;
+
+    @SerializedName("clanTag")
+    private String clanTag;
+
+
+
+
     public String getName() {
         return name;
     }
@@ -83,5 +92,23 @@ public class Player {
         int totalMatches = wins + losses;
         return totalMatches > 0 ? ((double) wins / totalMatches) * 100 : 0;
     }
+
+    public String getClanTag() {
+        return clanTag;
+    }
+    
+    public void setClanTag(String clanTag) {
+        this.clanTag = clanTag;
+    }
+
+    public String getClanName() {
+        return clanName;
+    }
+    
+    public void setClanName(String clanName) {
+        this.clanName = clanName;
+    }
+    
+    
 }
 
